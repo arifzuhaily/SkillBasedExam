@@ -1,0 +1,18 @@
+import socket
+
+def main():
+    host = "192.168.145.128”    port = 8888
+
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket.connect((host, port))
+
+    print("Connected to server at", host, "on port", port)
+
+    # Receive the random quote from the server
+    quote = client_socket.recv(1024).decode()
+    print("Quote of the day:", quote)
+
+    client_socket.close()
+
+if __name__ == "__main__":
+    main()

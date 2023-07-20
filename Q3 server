@@ -1,0 +1,36 @@
+import socket
+
+def convert_to_atm(pressure_bar):
+    return pressure_bar * 0.986923
+
+def main():
+    host = "192.168.145.128"
+    port = 8888
+
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.bind((host, port))
+    server_socket.listen(1)
+
+    print("Server is listening on port", port)
+
+    conn, addr = server_socket.accept()
+    print("Connection accepted from", addr)
+
+    while True:
+        try:
+            data = conn.recv(1024)
+            if not data:
+                break
+
+            pressure_bar = float(data.decode())
+            pressure_atm = convert_to_atm(pressure_bar)
+            conn.sendall(str(pressure_atm).encode())
+
+        except ValueError:
+            conn.sendall(b"Invalid input")
+
+    conn.close()
+    server_socket.close()
+
+if __name__ == "__main__":
+    main()

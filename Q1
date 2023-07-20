@@ -20,8 +20,6 @@ def main():
         client_socket.close()
         print("Connection closed")
 
-        unique_url = response.strip()  # Remove any leading/trailing whitespaces
-
     except Exception as e:
         print(f"Error: {e}")
 

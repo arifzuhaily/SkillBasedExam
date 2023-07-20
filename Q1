@@ -1,0 +1,29 @@
+import socket
+
+def main():
+    host = "izani.synology.me"
+    port = 8443
+
+    try:
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+        client_socket.connect((host, port))
+        print(f"Connected to {host} at port {port}")
+
+        student_id = "YOUR_STUDENT_ID"  
+        client_socket.sendall(student_id.encode())
+
+        data = client_socket.recv(1024)
+        response = data.decode()
+        print(f"Server response: {response}")
+
+        client_socket.close()
+        print("Connection closed")
+
+        unique_url = response.strip()  # Remove any leading/trailing whitespaces
+
+    except Exception as e:
+        print(f"Error: {e}")
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,38 @@
+import socket
+import threading
+import random
+
+QUOTES = [
+    "Energy and persistence conquer all things. -Benjamin Franklin",
+    "Two things are infinite: the universe and human stupidity; and I'm not sure about the universe. - Albert Einstein",
+     "Obstacles are those frightful things you see when you take your eyes off your goal. - Henry Ford,
+    "The only way to do great work is to love what you do. - Steve Jobs",
+"Determine that the thing can and shall be done, and then we shall find the way. -Abraham Lincoln”,
+    "The only thing we have to fear is fear itself. - Franklin D. Roosevelt",
+    "Live as if you were to die tomorrow. Learn as if you were to live forever. - Mahatma Gandhi”
+]
+
+def handle_client(client_socket):
+    random_quote = random.choice(QUOTES).encode()
+    client_socket.send(random_quote)
+    client_socket.close()
+
+def main():
+    host = "192.168.145.128"
+    port = 8888
+
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.bind((host, port))
+    server_socket.listen(5)
+
+    print("QOTD Server is listening on port", port)
+
+    while True:
+        client_socket, client_addr = server_socket.accept()
+        print("Connection accepted from", client_addr)
+
+        client_handler = threading.Thread(target=handle_client, args=(client_socket,))
+        client_handler.start()
+
+if __name__ == "__main__":
+    main()

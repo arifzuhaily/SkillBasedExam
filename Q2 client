@@ -16,8 +16,7 @@ int main() {
         perror("Error: socket creation failed");
         exit(EXIT_FAILURE);
     }
-
-    // Set server address
+  
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(SERVER_PORT);
     if (inet_pton(AF_INET, SERVER_IP, &server_addr.sin_addr) <= 0) {
@@ -26,7 +25,6 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-    // Connect to the server
     if (connect(client_socket, (struct sockaddr*)&server_addr, sizeof(server_addr)) == -1) {
         perror("Error: connection failed");
         close(client_socket);
@@ -35,7 +33,6 @@ int main() {
 
     printf("Connected to server at %s:%d\n", SERVER_IP, SERVER_PORT);
 
-    // Receive the random number from the server
     int random_number;
     ssize_t bytes_received = recv(client_socket, &random_number, sizeof(random_number), 0);
     if (bytes_received == -1) {
@@ -44,7 +41,6 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-    // Display the random number received from the server
     printf("Received random number from server: %d\n", random_number);
 
     // Close the socket
